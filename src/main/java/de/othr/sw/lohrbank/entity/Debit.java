@@ -18,9 +18,9 @@ import javax.persistence.Table;
 public class Debit extends Transaction {
 
     /// Creates a debit transaction set on specified date.
-    public Debit(String customerId, String message, Long accountFromId, Long accountToId, float value, Date date)
+    public Debit(Account accountFrom, Account accountTo, String message, double value, Date date)
     {
-        super(customerId, message, accountFromId, accountToId, value);
+        super(accountFrom, accountTo, message, value);
         this.transactionDate = date;
     }
 }

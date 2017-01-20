@@ -11,22 +11,42 @@
     <h:body>
         <ui:composition template="../../WEB-INF/lohrbankTemplate.xhtml">
             <ui:define name="content">
-                <b:panel title="Gesamtübersicht --- Konten: #{accountModel.GetAllAccounts().size()} --- Gesamtkontostand: #{accountModel.GetOverallBalance()}€" look="#{accountModel.IsFloatPositive(accountModel.GetOverallBalance())}">
-                        
+                <b:container class="col-xs-12 padding-top-15">
+                    <h:outputText rendered="#{accountModel.HasAccounts()}">Sieht so aus, als hätten Sie noch kein Konto bei uns eingerichtet.</h:outputText>
+                    <h:form>
+                        <h:commandButton class="col-lg-4 col-lg-offset-4 col-xs-10 col-xs-offset-1" action="#{accountModel.ShowAccountCreationPage()}" value="Neues Konto anlegen >>"/>
+                    </h:form>
+                </b:container>
+                
+                <b:panel title="Gesamtübersicht --- Konten: #{accountModel.GetAllAccounts().size()} --- Gesamtkontostand: #{accountModel.GetOverallBalance()}€" 
+                         look="#{accountModel.IsFloatPositive(accountModel.GetOverallBalance())}"
+                         class="padding-top-50">
                 </b:panel>
                 
                 <ui:repeat var="account" value="#{accountModel.GetAllAccounts()}">
-                    <b:panel title="#{account.name} Kontostand: #{account.balance}€" look="#{accountModel.IsFloatPositive(account.balance)}">
-                        <h2>So schauts aus.</h2>
+                    <b:panel title="#{account.name} --- Kontostand: #{account.balance}€" look="#{accountModel.IsFloatPositive(account.balance)}" collapsed="true">
+                        <h:outputLabel value="Kontonummer: #{account.id}"></h:outputLabel>
+<!--                        <ui:repeat var="transaction" value="#{transactionModel.GetLastTransactions(account.id)}">-->
+                            <!--ToDo: Buchungszeit - Zweck - Betrag-->
+                            <b:dataTable value="#{transactionModel.GetLastTransactions(account.id)}" var="transaction" lang="German">
+                                <b:dataTableColumn orderable="false">
+                                    <f:facet name="header">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                    <h:outputLabel><i class="glyphicon #{transactionModel.GetTransactionDirectionClass(account.id, transaction)}"/><i class="glyphicon glyphicon-home"/></h:outputLabel>
+                                </b:dataTableColumn>
+                                <b:dataTableColumn label="Buchungszeit" value="#{transaction.GetFormatedDateString()}" dataType="date"/>
+                                <b:dataTableColumn label="Zweck" value="#{transaction.message}" />
+                                <b:dataTableColumn label="Betrag" value="#{transaction.transactionValue}" content-style="#{transactionModel.GetTransactionValueClass(account.id, transaction)}"/>
+                            </b:dataTable>
+<!--                            <div class="tab-pane">
+                                <h:outputLabel value="#{transaction.transactionDate.toString()} - #{transaction.transactionValue}€"></h:outputLabel><br/>
+                                <h:outputLabel value="Von Konto #{transaction.accountFrom.getId()} "></h:outputLabel>
+                                <h:outputLabel value="auf Konto #{transaction.accountTo.getId()}"></h:outputLabel>
+                            </div>-->
+<!--                        </ui:repeat>-->
                     </b:panel>
                 </ui:repeat>
-                
-                <b:container class="col-xs-12">
-                    <h:outputText rendered="#{accountModel.HasAccounts()}">Sieht so aus, als hätten Sie noch kein Konto bei uns eingerichtet.</h:outputText>
-                    <h:form>
-                        <h:commandButton class="col-xs-10 col-xs-offset-1" action="#{accountModel.ShowAccountCreationPage()}" value="Neues Konto anlegen >>"/>
-                    </h:form>
-                </b:container>
             </ui:define>
         </ui:composition>
     </h:body>

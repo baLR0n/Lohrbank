@@ -14,14 +14,13 @@
             <ui:define name="content">
                 <h:form>
                     <h3>Bitte füllen Sie das Überweisungsformular aus</h3>
+                    <h:outputLabel value="Von welchem ihrer Konten möchten Sie Geld überweisen?"></h:outputLabel>
                     <b:selectOneMenu value="#{transactionModel.customerAccountId}" required="true">
                         <f:converter binding="#{transactionModel.accountConverter}"/>
-                        <f:selectItems value="#{transactionModel.GetAllAccounts()}" var="c" itemLabel="#{c.name}" itemValue="#{c.id}"/>
-<!--                        <ui:repeat var="account" value="#{transactionModel.GetAllAccounts()}">
-                            <f:selectItem value="#{account.name}" itemValue="#{account.id}"/>
-                        </ui:repeat>-->
+                        <f:selectItems value="#{transactionModel.GetAllAccounts()}" var="acc" itemLabel="#{acc.name}" itemValue="#{acc.id}"/>
                     </b:selectOneMenu>
                     <div id="targetAccountId" class="form-group">
+                        <h:outputLabel value="Kontonummer des Empfängers"></h:outputLabel>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <span><i class="glyphicon glyphicon-user"></i></span>
@@ -30,6 +29,7 @@
                         </div>
                     </div>
                     <div id="transactionvalue" class="form-group">
+                        <h:outputLabel value="Betrag"></h:outputLabel>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <span><i class="glyphicon glyphicon-euro"></i></span>
@@ -37,7 +37,16 @@
                             <h:inputText id="input_transactionvalue" value="#{transactionModel.value}" converterMessage="Bitte nur Zahlen eintragen." class="form-control bf-no-message has-success" pt:placeholder="Betrag" />
                         </div>
                     </div>
-                    <h:commandButton class="col-xs-12 margin-top-5" action="#{transactionModel.CreateTransaction()}" value="Erstellen"/>
+                    <div id="transactionmessage" class="form-group">
+                        <h:outputLabel value="Verwendungszweck"></h:outputLabel>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span><i class="glyphicon glyphicon-edit"></i></span>
+                            </span>
+                            <h:inputText id="input_transactionmessage" value="#{transactionModel.message}" class="form-control bf-no-message has-success" pt:placeholder="Verwendungszweck" />
+                        </div>
+                    </div>
+                    <h:commandButton class="col-xs-12 margin-top-5" action="#{transactionModel.CreateTransaction()}" value="Überweisen"/>
                 </h:form>
             </ui:define>
 

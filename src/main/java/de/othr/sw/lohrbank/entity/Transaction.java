@@ -7,8 +7,12 @@ package de.othr.sw.lohrbank.entity;
 
 import de.othr.sw.lohrbank.entity.util.GeneratedIdEntity;
 import java.io.Serializable;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,49 +24,78 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="Transactions")
 public class Transaction extends GeneratedIdEntity implements Serializable{
+        
+    @ManyToOne
+    @JoinColumn(name="client_id")
+    protected Account accountFrom; 
     
-    protected String customerId;
+    @ManyToOne
+    @JoinColumn(name="target_id")
+    protected Account accountTo;
+    
     protected String message;
-    protected Long accountFromId; 
-    protected Long accountToId;
     protected double transactionValue;
     
     @Temporal(TemporalType.TIMESTAMP)
     protected Date transactionDate;
     
+    public Transaction(){}
+    
     /// Creates a transaction.
-    public Transaction(String customerId, String message, Long accountFromId, Long accountToId, double value){
-        this.customerId = customerId;
+    public Transaction(Account accountFrom, Account accountTo, String message, double value){
+        this.accountFrom = accountFrom;
+        this.accountTo = accountTo;
         this.message = message;
-        this.accountFromId = accountFromId;
-        this.accountToId = accountToId;
         this.transactionValue = value;
         this.transactionDate = new Date();
     }
-        
-    // Getter
     
-    public String getCustomerId() {
-        return customerId;
+    public String GetFormatedDateString(){
+        Format format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        return format.format(this.transactionDate);
     }
+        
+    // Getter / Setter
 
     public String getMessage() {
         return message;
     }
-    
-    public Long getAccountFromId() {
-        return accountFromId;
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public Long getAccountToId() {
-        return accountToId;
+    public Account getAccountFrom() {
+        return accountFrom;
+    }
+
+    public void setAccountFrom(Account accountFrom) {
+        this.accountFrom = accountFrom;
+    }
+
+    public Account getAccountTo() {
+        return accountTo;
+    }
+
+    public void setAccountTo(Account accountTo) {
+        this.accountTo = accountTo;
     }
 
     public double getTransactionValue() {
         return transactionValue;
     }
 
+    public void setTransactionValue(double transactionValue) {
+        this.transactionValue = transactionValue;
+    }
+
     public Date getTransactionDate() {
         return transactionDate;
     }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+    
+ 
 }

@@ -22,7 +22,7 @@ public interface IAccountService {
     
     List<Account> GetAllAccounts(Customer customer);
     
-    double ChangeAccountBalance(int accountId, double value);
-    double ChangeAccountDisposition(int accountId, double disposition);
-    AccountInfo GetAccountInfo(int accountId, Date from, Date to);
+    double ChangeAccountBalance(Long accountId, double value);
+    double ChangeAccountDisposition(Long accountId, double disposition);
+    AccountInfo GetAccountInfo(Long accountId, Date from, Date to);
 }

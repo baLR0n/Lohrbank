@@ -5,10 +5,13 @@
  */
 package de.othr.sw.lohrbank.entity;
 
-import de.othr.sw.lohrbank.entity.util.GeneratedIdEntity;
+import de.othr.sw.lohrbank.entity.util.RandomIdEntity;
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -17,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Accounts")
-public class Account extends GeneratedIdEntity implements Serializable{
+public class Account extends RandomIdEntity implements Serializable{
     
     private String name;
     private double balance;
@@ -25,7 +28,13 @@ public class Account extends GeneratedIdEntity implements Serializable{
     
     @ManyToOne
     private Customer owner;
+    
+    @OneToMany(mappedBy="accountFrom")
+    private Set<Transaction> ownTransactions;
 
+    @OneToMany(mappedBy="accountTo")
+    private Set<Transaction> transactions;
+    
     public Account(){
     }
     

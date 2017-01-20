@@ -50,7 +50,13 @@ public class AccountModel implements Serializable {
     
     /// Shows the form to create an new account.
     public String ShowAccountCreationPage(){
+        this.ResetForm();
         return "showAccountCreation";
+    }
+    
+    private void ResetForm(){
+        this.accountName = "";
+        this.disposition = 0;
     }
     
     /// Returns every account of the currently logged in customer.

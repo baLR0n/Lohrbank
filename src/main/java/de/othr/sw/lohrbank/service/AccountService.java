@@ -67,7 +67,7 @@ public class AccountService implements IAccountService, Serializable{
 
     @Transactional
     @Override
-    public double ChangeAccountBalance(int accountId, double value) {
+    public double ChangeAccountBalance(Long accountId, double value) {
         Account account = entityManager.find(Account.class, accountId);
         
         if(account != null)
@@ -75,22 +75,22 @@ public class AccountService implements IAccountService, Serializable{
             double currentBalance = account.getBalance();
 
             // Check if the customer is allowed to proceed with this balance change.
-            if(currentBalance + value > account.getDisposition()){
+            if(currentBalance + value > -account.getDisposition()){
                 account.setBalance(currentBalance + value);
                 entityManager.persist(account);
                 return account.getBalance();
             }
             else{
-                // ToDo: change return value from float to Response object.
+                return -Double.MAX_VALUE;
             }
         }
         
-        return 0;
+        return -Double.MAX_VALUE;
     }
 
     @Transactional
     @Override
-    public double ChangeAccountDisposition(int accountId, double disposition) {
+    public double ChangeAccountDisposition(Long accountId, double disposition) {
         Account account = entityManager.find(Account.class, accountId);
         
         if(account != null)
@@ -106,7 +106,7 @@ public class AccountService implements IAccountService, Serializable{
 
     @Transactional
     @Override
-    public AccountInfo GetAccountInfo(int accountId, Date from, Date to) {
+    public AccountInfo GetAccountInfo(Long accountId, Date from, Date to) {
         Account account = entityManager.find(Account.class, accountId);
         AccountInfo info = new AccountInfo();
         
@@ -117,7 +117,7 @@ public class AccountService implements IAccountService, Serializable{
             info.setDateTo(to);
             
             // Get desired transactions from this timespan.
-            Query q = entityManager.createQuery("SELECT t FROM Transactions as t WHERE t.accountidto = :accountId");
+            Query q = entityManager.createQuery("SELECT t FROM Transaction AS t WHERE target_id = :accountId OR client_id = :accountId", Transaction.class);
             q.setParameter("accountId", accountId);
             
             List<Transaction> transactionList = q.getResultList();

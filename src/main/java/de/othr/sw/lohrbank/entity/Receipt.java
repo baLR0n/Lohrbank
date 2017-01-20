@@ -12,7 +12,6 @@ import java.util.Date;
  * @author Michael
  */
 public class Receipt {
-    private String customerId;
     private String message;
     private Long accountFromId;
     private Long accountToId;
@@ -26,11 +25,9 @@ public class Receipt {
     
     public Receipt(Transaction transaction)
     {
-        this.customerId = transaction.getCustomerId();
         this.message = transaction.getMessage();
-        this.accountFromId = transaction.getAccountFromId();
-        this.accountToId = transaction.getAccountToId();
-        this.accountFromId = transaction.getAccountFromId();
+        this.accountFromId = transaction.accountFrom.getId();
+        this.accountToId = transaction.accountTo.getId();
         this.date = transaction.getTransactionDate();
         this.value = transaction.getTransactionValue();
         this.success = true;
@@ -38,19 +35,13 @@ public class Receipt {
     
     public Receipt(Debit debit)
     {
-        this.customerId = debit.getCustomerId();
         this.message = debit.getMessage();
-        this.accountFromId = debit.getAccountFromId();
-        this.accountToId = debit.getAccountToId();
-        this.accountFromId = debit.getAccountFromId();
+        this.accountFromId = debit.accountFrom.getId();
+        this.accountToId = debit.accountTo.getId();
         this.date = debit.getTransactionDate();
         this.value = debit.getTransactionValue();
         this.transactionType = TransactionType.Debit;
         this.success = true;
-    }
-
-    public String getCustomerId() {
-        return customerId;
     }
 
     public String getMessage() {

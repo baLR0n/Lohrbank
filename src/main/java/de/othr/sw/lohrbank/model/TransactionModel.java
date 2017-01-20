@@ -6,6 +6,7 @@
 package de.othr.sw.lohrbank.model;
 
 import de.othr.sw.lohrbank.entity.Account;
+import de.othr.sw.lohrbank.entity.AccountInfo;
 import de.othr.sw.lohrbank.entity.Debit;
 import de.othr.sw.lohrbank.entity.Receipt;
 import de.othr.sw.lohrbank.entity.Transaction;
@@ -14,6 +15,9 @@ import de.othr.sw.lohrbank.service.AccountService;
 import de.othr.sw.lohrbank.service.TransactionService;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -53,16 +57,18 @@ public class TransactionModel implements Serializable {
 
     /// Creates an new transaction from the values entered in the register form.
     public String CreateTransaction(){
-        this.lastTransaction = new Transaction(this.customerModel.getCurrentSession().getCustomerId(), this.message, this.customerAccountId, this.targetAccountId, this.value);
+        this.lastReceipt = this.transactionService.CreateTransaction(this.customerAccountId, this.targetAccountId, this.message, this.value);
         
-        if(this.lastTransaction != null){
-            this.lastReceipt = this.transactionService.CreateTransaction(this.lastTransaction);
-            
+//        this.lastTransaction = new Transaction(this.customerModel.getCurrentSession().getCustomerId(), this.message, this.customerAccountId, this.targetAccountId, this.value);
+        
+//        if(this.lastTransaction != null){
+//            this.lastReceipt = this.transactionService.CreateTransaction(this.lastTransaction);
+//            
             // ToDo: handle results from receipt.
             if(this.lastReceipt.isSuccess()){
                 return "transactionCreated";
             }
-        }
+//        }
         
         return "transactionCreationFailed";
     }
@@ -77,17 +83,59 @@ public class TransactionModel implements Serializable {
         return "debitCreationFailed";
     }
             
-    public List<Transaction> GetLastTransactions(int number){
+    /// Get the last transactions of account Y from a selected timespan
+    public List<Transaction> GetLastTransactions(Long accountId, Date from, Date to){
+        List<Transaction> list = new ArrayList<>();
+        AccountInfo info = this.accountService.GetAccountInfo(accountId, from, to);
         
-        return null;
+        if(info != null && !info.getTransactions().isEmpty()){
+            list = info.getTransactions();
+        }
+        
+        return list;
+    }
+    
+    public List<Transaction> GetLastTransactions(Long accountId){
+        int daysBack = 30;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR, -daysBack);
+        return this.GetLastTransactions(accountId, calendar.getTime(), new Date());
+    }
+    
+    public String GetTransactionDirectionClass(Long accountId, Transaction transaction){
+        if(this.IsTransactionFromAccount(accountId, transaction)){
+            return "glyphicon-arrow-left";
+        }
+        return "glyphicon-arrow-right";
+    }
+    
+    public String GetTransactionValueClass(Long accountId, Transaction transaction){
+        if(this.IsTransactionFromAccount(accountId, transaction)){
+            return "color:red";
+        }
+        return "color:green";
+    }
+    
+    private boolean IsTransactionFromAccount(Long accountId, Transaction transaction){
+        return transaction.getAccountFrom().getId().equals(accountId);
     }
     
     public String ShowTransactionCreation(){
+        this.ResetForm();
         return "showTransactionCreation";
     }
     
     public String ShowDebitCreation(){
+        this.ResetForm();
         return "showDebitCreation";
+    }
+    
+    private void ResetForm(){
+        this.message = "";
+        this.value = 0;
+        this.targetAccountId = new Long(0);
+        this.customerAccountId = new Long(0);
     }
     
     public List<Account> GetAllAccounts(){
@@ -160,5 +208,12 @@ public class TransactionModel implements Serializable {
     public void setAccountConverter(AccountConverter accountConverter) {
         this.accountConverter = accountConverter;
     }
-   
+
+    public Receipt getLastReceipt() {
+        return lastReceipt;
+    }
+
+    public void setLastReceipt(Receipt lastReceipt) {
+        this.lastReceipt = lastReceipt;
+    }  
 }

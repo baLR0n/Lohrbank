@@ -13,16 +13,16 @@ import java.util.List;
  * @author Michael
  */
 public class AccountInfo {
-    private int accountId;
+    private Long accountId;
     private Date dateFrom;
     private Date dateTo;
     private List<Transaction> transactions;
 
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
