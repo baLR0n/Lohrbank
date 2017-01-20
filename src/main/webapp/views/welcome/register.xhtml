@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Bei Lohrbank registrieren</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../../WEB-INF/lohrbankTemplate.xhtml">
+            <ui:define name="content">
+                <div id="left">
+                    <ui:insert name="left">
+                        <h:form class="col-xs-10 col-xs-offset-1 col-lg-4 col-lg-offset-4 text-centered" rendered="#{!customerModel.HasLoggedInCustomer()}">
+                            <h2>Bitte geben Sie ihre Daten an</h2>
+                            <div id="firstname" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="glyphicon glyphicon-user"></i></span>
+                                    </span>
+                                    <h:inputText id="input_firstname" value="#{customerModel.firstName}" class="form-control bf-no-message has-success" pt:placeholder="Vorname" />
+                                </div>
+                            </div>
+                            <div id="name" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="glyphicon glyphicon-user"></i></span>
+                                    </span>
+                                    <h:inputText id="input_name" value="#{customerModel.name}" class="form-control bf-no-message has-success" pt:placeholder="Name" />
+                                </div>
+                            </div>
+                            <div id="citizenId" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="glyphicon glyphicon-registration-mark"></i></span>
+                                    </span>
+                                    <h:inputText id="input_citizenId" value="#{customerModel.citizenId}" class="form-control bf-no-message has-success" pt:placeholder="Meldeamt-ID" />
+                                </div>
+                            </div>
+                            <div id="email" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="glyphicon glyphicon-globe"></i></span>
+                                    </span>
+                                    <h:inputText id="input_email" value="#{customerModel.userId}" class="form-control bf-no-message has-success" pt:placeholder="Email" />
+                                </div>
+                            </div>
+                            <div id="password" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="fa fa-key"></i></span>
+                                    </span>
+                                    <h:inputSecret id="input_password" value="#{customerModel.password}" class="form-control bf-no-message has-success" pt:placeholder="Passwort" />
+                                </div>
+                            </div>
+                            <div id="password_again" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="fa fa-key"></i></span>
+                                    </span>
+                                    <h:inputSecret id="input_password_again" value="#{customerModel.passwordAgain}" class="form-control bf-no-message has-success" pt:placeholder="Passwort bestätigen" />
+                                </div>
+                            </div>
+                            <h:commandButton class="col-xs-12 margin-top-5" action="#{customerModel.Register()}" value="Registrieren"/>
+                        </h:form>
+                    </ui:insert>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Banking</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../../WEB-INF/lohrbankTemplate.xhtml">
+            <ui:define name="content">
+                <div class="col-lg-8 col-lg-offset-2 col-xs-10 col-xs-offset-1">
+                    <b:container class="col-xs-12" rendered="#{accountModel.HasAccounts()}">
+                        <h2>Was möchten Sie tun?</h2>
+                        <h:form>
+                            <b:row>
+                                <div class="col-xs-6 height-150">
+                                    <h2>Überweisung</h2>
+                                    <p class="height-80">Überweisen Sie Geld von einem ihrer Konten auf ein Konto ihrer Wahl. Die Buchung wird sofort durchgeführt.</p>
+                                    <h:commandButton class="col-xs-12" action="#{transactionModel.ShowTransactionCreation()}" value="Überweisung tätigen >>"/>
+                                </div>
+                                <div class="col-xs-6 height-150">
+                                    <h2>Lastschrift</h2>
+                                    <p class="height-80">Planen Sie einen Geldtransfer zu einem von Ihnen gewählten Zeitpunkt.</p>
+                                    <h:commandButton class="col-xs-12" action="#{transactionModel.ShowDebitCreation()}" value="Lastschrift anlegen >>"/>
+                                </div>
+                            </b:row>
+                        </h:form>
+                    </b:container>
+                    
+                    <b:container class="col-xs-12" rendered="#{!accountModel.HasAccounts()}">
+                        <h3>Sieht so aus, als hätten Sie noch kein Konto bei uns eingerichtet.</h3>
+                        <h:form>
+                            <h:commandButton class="col-xs-12" action="#{accountModel.ShowAccountCreationPage()}" value="Jetzt Konto anlegen >>"/>
+                        </h:form>
+                    </b:container>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</html>

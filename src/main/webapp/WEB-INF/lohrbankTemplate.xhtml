@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <title>Niemals a Lohr mit der Lohrbank</title>
+    </h:head>
+
+    <h:body id="body">
+        <b:navBar brand="Lohrbank" brand-href="#">
+            <b:navbarLinks>
+                <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Home" outcome="home"></b:navLink>
+                <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Banking" outcome="banking"></b:navLink>
+                <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Meine Konten" outcome="konten"></b:navLink>
+            </b:navbarLinks>
+            <h:form rendered="#{customerModel.HasLoggedInCustomer()}" class="navbar-logout">
+                <h:outputText value="Hallo #{customerModel.currentSession.firstName}!"/>
+                <h:commandButton class="margin-left-5" action="#{customerModel.Logout()}" value="Logout"></h:commandButton>
+            </h:form>
+        </b:navBar> <!-- Nav-bar -->
+        
+            <div id="main">
+                <div id="content" class="col-xs-10 col-xs-offset-1">
+                    <ui:insert name="content">Content</ui:insert>
+                </div>
+            </div>
+        <div class="navbar navbar-fixed-bottom text-centered" id="footer">
+            <ui:insert name="bottom">&copy; Michael Lohr | OTH Regensburg 2017</ui:insert>
+        </div>
+    </h:body>
+
+</html>
