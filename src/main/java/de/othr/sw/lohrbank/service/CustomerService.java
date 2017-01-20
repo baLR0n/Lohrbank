@@ -9,6 +9,8 @@ import de.othr.sw.lohrbank.entity.Customer;
 import de.othr.sw.lohrbank.webservice.IDCardService;
 import de.othr.sw.lohrbank.webservice.IdentityService;
 import javax.enterprise.context.RequestScoped;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +20,7 @@ import javax.transaction.Transactional;
  *
  * @author Michael
  */
+@WebService
 @RequestScoped
 public class CustomerService implements ICustomerService {
     
@@ -39,7 +42,14 @@ public class CustomerService implements ICustomerService {
         }
     }
     
-    // ToDo: don´t return boolean, return a response object.
+    /**
+     * Give your customer ID (e-mail address) and your password and check if the authorization is granted.
+     *
+     * @param customerId
+     * @param password
+     * @return Customer object to continue web banking.
+     */
+    @WebMethod
     @Override
     public Customer CheckCustomerAuth(String customerId, String password){
         Customer customer = entityManager.find(Customer.class, customerId);
