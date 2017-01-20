@@ -54,6 +54,15 @@ public class Transaction extends GeneratedIdEntity implements Serializable{
         Format format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         return format.format(this.transactionDate);
     }
+    
+    public String GetOtherCustomerName(Long accountId){
+        if(this.accountFrom.getId().equals(accountId)){
+            return String.format("%s %s (Knt.Nr: %s)", this.accountTo.getOwner().getFirstName(), this.accountTo.getOwner().getName(), this.accountTo.getId().toString());
+        }
+        else{
+            return String.format("%s %s (Knt.Nr: %s)", this.accountFrom.getOwner().getFirstName(), this.accountFrom.getOwner().getName(), this.accountFrom.getId().toString());
+        }
+    }
         
     // Getter / Setter
 

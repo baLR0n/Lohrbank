@@ -6,6 +6,8 @@
 package de.othr.sw.lohrbank.service;
 
 import de.othr.sw.lohrbank.entity.Customer;
+import de.othr.sw.lohrbank.webservice.IDCardService;
+import de.othr.sw.lohrbank.webservice.IdentityService;
 import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
@@ -50,22 +52,24 @@ public class CustomerService implements ICustomerService {
     }
     
     @Override
-    public boolean IdentityRequest(String id, String name, String firstName){
-//        try { // Call Web Service Operation
-//            IdentityService service = new IdentityService();
-//            IDCardService port = service.getIDCardServicePort();
-//            // TODO initialize WS operation arguments here
-//            String idCardNumber = id;
-//            String firstname = firstName;
-//            String lastname = name;
-//            // TODO process result here
-//            boolean result = port.identityRequest(idCardNumber, firstname, lastname);
-//            return result;
-//        } catch (Exception ex) {
-//            // TODO handle custom exceptions here
-//            return false;
-//        }      
+    public boolean IdentityRequest(String id, String name, String firstName){   
         
-        return true;
+        try { // Call Web Service Operation
+            IdentityService service = new IdentityService();
+            IDCardService port = service.getIDCardServicePort();
+            
+            // TODO initialize WS operation arguments here
+            String idCardNumber = id;
+            String firstname = firstName;
+            String lastname = name;
+            
+            // TODO process result here
+            boolean result = port.identityRequest(idCardNumber, firstname, lastname);
+            return result;
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+        }
+
+        return false;
     }
 }

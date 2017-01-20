@@ -33,16 +33,17 @@ public class CustomerModel implements Serializable {
         rootDataService.GenerateRootData();
     }
     
-    private String userId, name, firstName, password, passwordAgain, citizenId;
+    private String userId, name, firstName, password, passwordAgain, citizenId, errorMessage;
     private Customer lastGenerated = null;
     private Customer currentSession = null;
 
     /// Creates a new customer from the values entered in the register form.
     public String CreateCustomer(){
         this.lastGenerated = customerService.CreateCustomer(new Customer(this.userId, this.name, this.firstName, this.password));
-        this.userId = this.name = this.firstName = this.password = "";
+        this.ClearForm();
         
         if(this.lastGenerated == null){
+            this.errorMessage = "Kundenkonto konnte nicht angelegt werden.";
             return "customerCreatedFailed";
         }
         
@@ -64,9 +65,17 @@ public class CustomerModel implements Serializable {
     /// Checks citizen ID, form data and creates a new customer.
     // ToDo: namen und vornamen in die Form
     public String Register(){
-        if(this.customerService.IdentityRequest(this.citizenId, this.name, this.firstName) &&
-                this.password.equals(this.passwordAgain)){
-            return this.CreateCustomer();
+        if(this.customerService.IdentityRequest(this.citizenId, this.name, this.firstName)){
+            if(this.password.equals(this.passwordAgain)){
+                return this.CreateCustomer();
+            }else{
+                this.password = "";
+                this.passwordAgain = "";
+                this.errorMessage = "Passwörter stimmen nicht überein!";
+            }
+        }else{
+            this.citizenId = "";
+            this.errorMessage = "Ungültige Meldeamt-ID!";
         }
         
         return "registerFailed";
@@ -81,6 +90,17 @@ public class CustomerModel implements Serializable {
         return this.currentSession != null;
     }
     
+    
+    private void ClearForm(){
+        this.errorMessage = "";
+        this.citizenId = "";
+        this.firstName = "";
+        this.name = "";
+        this.password = "";
+        this.passwordAgain = "";
+    }
+    
+    /// Getter / Setter
     public String getUserId() {
         return userId;
     }
@@ -144,6 +164,13 @@ public class CustomerModel implements Serializable {
     public void setCurrentSession(Customer currentSession) {
         this.currentSession = currentSession;
     }
-    
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
     
 }

@@ -35,6 +35,16 @@
             <to-view-id>views/banking/home.xhtml</to-view-id>
         </navigation-case>
         
+        <navigation-case>
+            <from-outcome>customerCreationFailed</from-outcome>
+            <to-view-id>views/welcome/register.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>registerFailed</from-outcome>
+            <to-view-id>views/welcome/register.xhtml</to-view-id>
+        </navigation-case>        
+        
         <!--Accounts-->
         <navigation-case>
             <from-outcome>showAccountCreation</from-outcome>

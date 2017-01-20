@@ -35,6 +35,7 @@
                                     </f:facet>
                                     <h:outputLabel><i class="glyphicon #{transactionModel.GetTransactionDirectionClass(account.id, transaction)}"/><i class="glyphicon glyphicon-home"/></h:outputLabel>
                                 </b:dataTableColumn>
+                                <b:dataTableColumn label="Von/An" value="#{transaction.GetOtherCustomerName(account.id)}"/>
                                 <b:dataTableColumn label="Buchungszeit" value="#{transaction.GetFormatedDateString()}" dataType="date"/>
                                 <b:dataTableColumn label="Zweck" value="#{transaction.message}" />
                                 <b:dataTableColumn label="Betrag" value="#{transaction.transactionValue}" content-style="#{transactionModel.GetTransactionValueClass(account.id, transaction)}"/>

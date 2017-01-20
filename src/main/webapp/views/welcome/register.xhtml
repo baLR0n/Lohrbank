@@ -66,6 +66,7 @@
                             </div>
                             <h:commandButton class="col-xs-12 margin-top-5" action="#{customerModel.Register()}" value="Registrieren"/>
                         </h:form>
+                        <h:outputLabel value="#{customerModel.errorMessage}" style="color:red"/>
                     </ui:insert>
                 </div>
             </ui:define>

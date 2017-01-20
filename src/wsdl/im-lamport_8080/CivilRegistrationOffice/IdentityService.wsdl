@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.civilregistrationoffice.maj.othr.de/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="IdentityService" targetNamespace="http://service.civilregistrationoffice.maj.othr.de/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.civilregistrationoffice.maj.othr.de/" elementFormDefault="unqualified" targetNamespace="http://service.civilregistrationoffice.maj.othr.de/" version="1.0">
+
+  <xs:element name="identityRequest" type="tns:identityRequest"/>
+
+  <xs:element name="identityRequestResponse" type="tns:identityRequestResponse"/>
+
+  <xs:complexType name="identityRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="idCardNumber" type="xs:string"/>
+      <xs:element minOccurs="0" name="firstname" type="xs:string"/>
+      <xs:element minOccurs="0" name="lastname" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="identityRequestResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="identityRequestResponse">
+    <wsdl:part element="tns:identityRequestResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="identityRequest">
+    <wsdl:part element="tns:identityRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="IDCardService">
+    <wsdl:operation name="identityRequest">
+      <wsdl:input message="tns:identityRequest" name="identityRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:identityRequestResponse" name="identityRequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IdentityServiceSoapBinding" type="tns:IDCardService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="identityRequest">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="identityRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="identityRequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IdentityService">
+    <wsdl:port binding="tns:IdentityServiceSoapBinding" name="IDCardServicePort">
+      <soap:address location="http://im-lamport:8080/CivilRegistrationOffice/IdentityService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

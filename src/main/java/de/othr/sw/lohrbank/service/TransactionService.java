@@ -44,7 +44,7 @@ public class TransactionService implements ITransactionService {
             this.accountService.ChangeAccountBalance(accountTo.getId(), transaction.getTransactionValue());
             
             // Persist new transaction.
-            entityManager.persist(transaction);    
+            entityManager.persist(transaction);
             
             // Create and return receipt.
             return new Receipt(transaction);
