@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Lastschrift erstellen</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../../WEB-INF/lohrbankTemplate.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h3>Bitte füllen Sie das Lastschriftformular aus</h3>
+                    <h:outputLabel value="Von welchem ihrer Konten möchten Sie Geld überweisen?"></h:outputLabel>
+                    <b:selectOneMenu value="#{transactionModel.customerAccountId}" required="true">
+                        <f:converter binding="#{transactionModel.accountConverter}"/>
+                        <f:selectItems value="#{transactionModel.GetAllAccounts()}" var="acc" itemLabel="#{acc.name}" itemValue="#{acc.id}"/>
+                    </b:selectOneMenu>
+                    <div id="debittargetAccountId" class="form-group">
+                        <h:outputLabel value="Kontonummer des Empfängers"></h:outputLabel>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span><i class="glyphicon glyphicon-user"></i></span>
+                            </span>
+                            <h:inputText id="input_debittargetaccountid" required="true" value="#{transactionModel.targetAccountId}" class="form-control bf-no-message has-success" pt:placeholder="Kontonummer" />
+                        </div>
+                    </div>
+                    <div id="debitvalue" class="form-group">
+                        <h:outputLabel value="Betrag"></h:outputLabel>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span><i class="glyphicon glyphicon-euro"></i></span>
+                            </span>
+                            <h:inputText id="input_debitvalue" value="#{transactionModel.value}" required="true" converterMessage="Bitte nur Zahlen eintragen." class="form-control bf-no-message has-success" pt:placeholder="Betrag" />
+                        </div>
+                    </div>
+                    <div id="debitmessage" class="form-group">
+                        <h:outputLabel value="Verwendungszweck"></h:outputLabel>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span><i class="glyphicon glyphicon-edit"></i></span>
+                            </span>
+                            <h:inputText id="input_debitmessage" value="#{transactionModel.message}" class="form-control bf-no-message has-success" pt:placeholder="Verwendungszweck" />
+                        </div>
+                    </div>
+                    <div id="picker-anchor" style="position: relative;"></div>
+                    <div style="overflow: hidden;">
+                        <div id="debitdate" class="form-group">
+                            <b:dateTimePicker label="Ausführungsdatum" use-current="true" icon-position="left" mode="popup" format="DD.MM.YYYY" render-label="true" value="#{transactionModel.transactionDate}"/>
+                        </div>
+                    </div>
+                    <h:commandButton class="col-xs-12 margin-top-5" action="#{transactionModel.CreateDebit()}" value="Lastschrift erstellen"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</html>

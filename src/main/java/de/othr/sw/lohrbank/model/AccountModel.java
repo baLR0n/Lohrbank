@@ -65,6 +65,7 @@ public class AccountModel implements Serializable {
         return this.accountService.GetAllAccounts(current);
     }
     
+    /// Gets the balance of all accounts of the logged in customer combined.
     public double GetOverallBalance(){
         List<Account> accounts = this.accountService.GetAllAccounts(this.customerModel.getCurrentSession());
         
@@ -85,6 +86,11 @@ public class AccountModel implements Serializable {
     
     /// Checks if the current user has any accounts registered.
     public boolean HasAccounts(){
+        if(!this.customerModel.HasLoggedInCustomer())
+        {
+            return false;
+        }
+        
         List<Account> check = this.accountService.GetAllAccounts(this.customerModel.getCurrentSession());
         
         return check != null && !check.isEmpty();

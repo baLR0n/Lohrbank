@@ -54,12 +54,15 @@ public class CustomerModel implements Serializable {
     /// Checks user auth and proceeds with login.
     public void Login(){
         this.currentSession = this.customerService.CheckCustomerAuth(this.userId, this.password);
+        
+        // Start job to check for debits which change the balance of one of the users accounts.
+        
     }
     
     /// Logout
     public String Logout(){
         this.currentSession = null;
-        return "home";
+        return "welcome";
     }
     
     /// Checks citizen ID, form data and creates a new customer.

@@ -25,4 +25,5 @@ public interface IAccountService {
     double ChangeAccountBalance(Long accountId, double value);
     double ChangeAccountDisposition(Long accountId, double disposition);
     AccountInfo GetAccountInfo(Long accountId, Date from, Date to);
+    void CheckForDebits(Customer customer);
 }

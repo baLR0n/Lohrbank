@@ -10,6 +10,7 @@ import de.othr.sw.lohrbank.webservice.IDCardService;
 import de.othr.sw.lohrbank.webservice.IdentityService;
 import javax.enterprise.context.RequestScoped;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import javax.persistence.EntityManager;
@@ -28,8 +29,9 @@ public class CustomerService implements ICustomerService {
     private EntityManager entityManager;
         
     @Transactional
+    @WebMethod(exclude=true)
     @Override
-    public Customer CreateCustomer(Customer customer) {
+    public Customer CreateCustomer(@WebParam(name="customer") Customer customer) {
         try
         {
             // Persist new customer.
@@ -51,7 +53,7 @@ public class CustomerService implements ICustomerService {
      */
     @WebMethod
     @Override
-    public Customer CheckCustomerAuth(String customerId, String password){
+    public Customer CheckCustomerAuth(@WebParam(name="customerId") String customerId, @WebParam(name="password") String password){
         Customer customer = entityManager.find(Customer.class, customerId);
         
         if(customer != null && customer.getPassword().equals(password)){
@@ -62,6 +64,7 @@ public class CustomerService implements ICustomerService {
     }
     
     @Override
+    @WebMethod(exclude=true)
     public boolean IdentityRequest(String id, String name, String firstName){   
         
         try { // Call Web Service Operation

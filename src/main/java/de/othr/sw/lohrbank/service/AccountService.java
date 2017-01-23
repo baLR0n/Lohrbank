@@ -8,8 +8,10 @@ package de.othr.sw.lohrbank.service;
 import de.othr.sw.lohrbank.entity.Account;
 import de.othr.sw.lohrbank.entity.AccountInfo;
 import de.othr.sw.lohrbank.entity.Customer;
+import de.othr.sw.lohrbank.entity.Debit;
 import de.othr.sw.lohrbank.entity.Transaction;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -38,14 +40,14 @@ public class AccountService implements IAccountService, Serializable{
     @Transactional
     @Override
     public Account CreateAccount(Customer customer, String name, double balance, double disposition) {
-        customer = entityManager.merge(customer);
+        customer = this.entityManager.merge(customer);
         
         Account account = new Account();
         account.setOwner(customer);
         account.setName(name);
         account.setBalance(balance);
         account.setDisposition(disposition);
-        entityManager.persist(account);
+        this.entityManager.persist(account);
         
         return account;
     }
@@ -60,7 +62,7 @@ public class AccountService implements IAccountService, Serializable{
         account.setName(name);
         account.setBalance(balance);
         account.setDisposition(disposition);
-        entityManager.persist(account);
+        this.entityManager.persist(account);
         
         return account;
     }
@@ -68,7 +70,7 @@ public class AccountService implements IAccountService, Serializable{
     @Transactional
     @Override
     public double ChangeAccountBalance(Long accountId, double value) {
-        Account account = entityManager.find(Account.class, accountId);
+        Account account = this.entityManager.find(Account.class, accountId);
         
         if(account != null)
         {
@@ -77,7 +79,7 @@ public class AccountService implements IAccountService, Serializable{
             // Check if the customer is allowed to proceed with this balance change.
             if(currentBalance + value > -account.getDisposition()){
                 account.setBalance(currentBalance + value);
-                entityManager.persist(account);
+                this.entityManager.persist(account);
                 return account.getBalance();
             }
             else{
@@ -91,12 +93,12 @@ public class AccountService implements IAccountService, Serializable{
     @Transactional
     @Override
     public double ChangeAccountDisposition(Long accountId, double disposition) {
-        Account account = entityManager.find(Account.class, accountId);
+        Account account = this.entityManager.find(Account.class, accountId);
         
         if(account != null)
         {
             account.setDisposition(disposition);
-            entityManager.persist(account);
+            this.entityManager.persist(account);
             
             return account.getDisposition();
         }
@@ -107,7 +109,7 @@ public class AccountService implements IAccountService, Serializable{
     @Transactional
     @Override
     public AccountInfo GetAccountInfo(Long accountId, Date from, Date to) {
-        Account account = entityManager.find(Account.class, accountId);
+        Account account = this.entityManager.find(Account.class, accountId);
         AccountInfo info = new AccountInfo();
         
         if(account != null)
@@ -116,8 +118,8 @@ public class AccountService implements IAccountService, Serializable{
             info.setDateFrom(from);
             info.setDateTo(to);
             
-            // Get desired transactions from this timespan.
-            Query q = entityManager.createQuery("SELECT t FROM Transaction AS t WHERE target_id = :accountId OR client_id = :accountId", Transaction.class);
+            // Get transactions from this account.
+            Query q = this.entityManager.createQuery("SELECT t FROM Transaction AS t WHERE target_id = :accountId OR client_id = :accountId", Transaction.class);
             q.setParameter("accountId", accountId);
             
             List<Transaction> transactionList = q.getResultList();
@@ -131,11 +133,44 @@ public class AccountService implements IAccountService, Serializable{
     @Transactional
     @Override
     public List<Account> GetAllAccounts(Customer customer) {
-        customer = entityManager.merge(customer);
+        customer = this.entityManager.merge(customer);
         
         TypedQuery<Account> query = this.entityManager.createQuery("SELECT a FROM Account AS a WHERE owner_id = :customerid", Account.class);
         query.setParameter("customerid", customer.getId());
 
         return query.getResultList();
+    }
+    
+    @Transactional
+    @Override
+    public void CheckForDebits(Customer customer){
+        customer = this.entityManager.merge(customer);
+        
+        List<Account> accounts = this.GetAllAccounts(customer);
+        List<Debit> debits = new ArrayList<>();
+        
+        // Get all accounts from this customer and check for debits.
+        accounts.stream().map((account) -> {
+            TypedQuery<Debit> query = this.entityManager.createQuery("SELECT d FROM Debit AS d WHERE client_id = :accountid OR target_id = :accountid", Debit.class);
+            query.setParameter("accountid", account.getId());
+            return query;
+        }).forEach((query) -> {
+            debits.addAll(query.getResultList());
+        });
+        
+        // Check all debits if they were processed yet.
+        // If not, do it if the time has come.
+        debits.stream().map((debit) -> this.entityManager.merge(debit)).filter((debit) -> (!debit.isIsCompleted() && debit.getTransactionDate().compareTo(new Date()) <= 0)).map((debit) -> {
+            this.ChangeAccountBalance(debit.getAccountFrom().getId(), -debit.getTransactionValue());
+            return debit;
+        }).map((debit) -> {
+            this.ChangeAccountBalance(debit.getAccountTo().getId(), debit.getTransactionValue());
+            return debit;
+        }).map((debit) -> {
+            debit.setIsCompleted(true);
+            return debit;
+        }).forEach((debit) -> {
+            this.entityManager.persist(debit);
+        });
     }
 }

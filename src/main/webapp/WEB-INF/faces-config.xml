@@ -6,65 +6,75 @@
 
     <navigation-rule>
         <description>Allgemeine Routingregeln</description>
-        <from-view-id>views/*</from-view-id>
+        <from-view-id>/views/*</from-view-id>
 
         <!--Navigation-->        
         <navigation-case>
             <from-outcome>home</from-outcome>
-            <to-view-id>views/welcome/welcome.xhtml</to-view-id>
+            <to-view-id>/views/banking/home.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>welcome</from-outcome>
+            <to-view-id>/views/welcome/welcome.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>banking</from-outcome>
-            <to-view-id>views/banking/banking.xhtml</to-view-id>
+            <to-view-id>/views/banking/banking.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>konten</from-outcome>
-            <to-view-id>views/banking/accounts.xhtml</to-view-id>
+            <to-view-id>/views/banking/accounts.xhtml</to-view-id>
         </navigation-case>
         
         <!--Login / Logout / Register-->
         <navigation-case>
             <from-outcome>showRegister</from-outcome>
-            <to-view-id>views/welcome/register.xhtml</to-view-id>
+            <to-view-id>/views/welcome/register.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>customerCreated</from-outcome>
-            <to-view-id>views/banking/home.xhtml</to-view-id>
+            <to-view-id>/views/banking/home.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>customerCreationFailed</from-outcome>
-            <to-view-id>views/welcome/register.xhtml</to-view-id>
+            <to-view-id>/views/welcome/register.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>registerFailed</from-outcome>
-            <to-view-id>views/welcome/register.xhtml</to-view-id>
+            <to-view-id>/views/welcome/register.xhtml</to-view-id>
         </navigation-case>        
         
         <!--Accounts-->
         <navigation-case>
             <from-outcome>showAccountCreation</from-outcome>
-            <to-view-id>views/banking/accountCreation.xhtml</to-view-id>
+            <to-view-id>/views/banking/accountCreation.xhtml</to-view-id>
         </navigation-case>
         
         <!--Transactions-->
         <navigation-case>
             <from-outcome>showTransactionCreation</from-outcome>
-            <to-view-id>views/banking/transactionCreation.xhtml</to-view-id>
+            <to-view-id>/views/banking/transactionCreation.xhtml</to-view-id>
         </navigation-case>
         
         <navigation-case>
             <from-outcome>showDebitCreation</from-outcome>
-            <to-view-id>views/banking/debitCreation.xhtml</to-view-id>
+            <to-view-id>/views/banking/debitCreation.xhtml</to-view-id>
         </navigation-case>      
         
         <navigation-case>
             <from-outcome>transactionCreated</from-outcome>
-            <to-view-id>views/banking/afterTransaction.xhtml</to-view-id>
+            <to-view-id>/views/banking/afterTransaction.xhtml</to-view-id>
         </navigation-case>    
+        
+        <navigation-case>
+            <from-outcome>debitCreated</from-outcome>
+            <to-view-id>/views/banking/afterTransaction.xhtml</to-view-id>
+        </navigation-case>            
     </navigation-rule>
 </faces-config>

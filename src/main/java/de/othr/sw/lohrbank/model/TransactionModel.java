@@ -50,6 +50,7 @@ public class TransactionModel implements Serializable {
     private double value;
     private Long targetAccountId;    
     private Long customerAccountId;
+    private Date transactionDate;
     
     private Transaction lastTransaction;
     private Debit lastDebit;
@@ -59,24 +60,20 @@ public class TransactionModel implements Serializable {
     public String CreateTransaction(){
         this.lastReceipt = this.transactionService.CreateTransaction(this.customerAccountId, this.targetAccountId, this.message, this.value);
         
-//        this.lastTransaction = new Transaction(this.customerModel.getCurrentSession().getCustomerId(), this.message, this.customerAccountId, this.targetAccountId, this.value);
-        
-//        if(this.lastTransaction != null){
-//            this.lastReceipt = this.transactionService.CreateTransaction(this.lastTransaction);
-//            
-            // ToDo: handle results from receipt.
-            if(this.lastReceipt.isSuccess()){
-                return "transactionCreated";
-            }
-//        }
-        
+        // ToDo: handle results from receipt.
+        if(this.lastReceipt.isSuccess()){
+            return "transactionCreated";
+        }
+
         return "transactionCreationFailed";
     }
 
     /// Creates an new debit from the values entered in the register form.
     public String CreateDebit(){
+        this.lastReceipt = this.transactionService.CreateDebit(this.customerAccountId, this.targetAccountId, this.message, this.value, this.transactionDate);
         
-        if(this.lastTransaction != null){
+        if(this.lastReceipt.isSuccess()){
+            this.accountService.CheckForDebits(this.customerModel.getCurrentSession());
             return "debitCreated";
         }
         
@@ -136,6 +133,7 @@ public class TransactionModel implements Serializable {
         this.value = 0;
         this.targetAccountId = new Long(0);
         this.customerAccountId = new Long(0);
+        this.transactionDate = new Date();
     }
     
     public List<Account> GetAllAccounts(){
@@ -185,6 +183,14 @@ public class TransactionModel implements Serializable {
         this.customerAccountId = customerAccountId;
     }
 
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+    
     public Transaction getLastTransaction() {
         return lastTransaction;
     }

@@ -17,10 +17,23 @@ import javax.persistence.Table;
 @Table(name="Debits")
 public class Debit extends Transaction {
 
+    private boolean isCompleted;
+
+    public Debit() {
+    }
+    
     /// Creates a debit transaction set on specified date.
     public Debit(Account accountFrom, Account accountTo, String message, double value, Date date)
     {
         super(accountFrom, accountTo, message, value);
         this.transactionDate = date;
+    }
+
+    public boolean isIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 }
