@@ -40,6 +40,30 @@
                                     <h:inputText id="input_citizenId" value="#{customerModel.citizenId}" class="form-control bf-no-message has-success" pt:placeholder="Meldeamt-ID" />
                                 </div>
                             </div>
+                            <div id="street" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="glyphicon glyphicon-road"></i></span>
+                                    </span>
+                                    <h:inputText id="input_street" value="#{customerModel.street}" class="form-control bf-no-message has-success" pt:placeholder="Straße" />
+                                </div>
+                            </div>
+                            <div id="postcode" class="form-group col-xs-4" style="padding-left:0px; padding-right:0px;">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="glyphicon glyphicon-envelope"></i></span>
+                                    </span>
+                                    <h:inputText id="input_postcode" value="#{customerModel.postcode}" class="form-control bf-no-message has-success" pt:placeholder="PLZ" />
+                                </div>
+                            </div>
+                            <div id="city" class="form-group col-xs-8" style="padding-left:10px; padding-right:0px;">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span><i class="glyphicon glyphicon-map-marker"></i></span>
+                                    </span>
+                                    <h:inputText id="input_city" value="#{customerModel.city}" class="form-control bf-no-message has-success" pt:placeholder="Ort" />
+                                </div>
+                            </div>
                             <div id="email" class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon">

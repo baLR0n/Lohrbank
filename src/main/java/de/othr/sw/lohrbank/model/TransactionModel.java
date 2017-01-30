@@ -58,7 +58,7 @@ public class TransactionModel implements Serializable {
 
     /// Creates an new transaction from the values entered in the register form.
     public String CreateTransaction(){
-        this.lastReceipt = this.transactionService.CreateTransaction(this.customerAccountId, this.targetAccountId, this.message, this.value);
+        this.lastReceipt = this.transactionService.CreateTransaction(this.customerModel.getCurrentSession(), this.customerAccountId, this.targetAccountId, this.message, this.value);
         
         // ToDo: handle results from receipt.
         if(this.lastReceipt.isSuccess()){

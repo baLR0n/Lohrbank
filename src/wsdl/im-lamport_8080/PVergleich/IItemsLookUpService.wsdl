@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.pvergleich.sw.othr.de/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="IItemsLookUpServiceService" targetNamespace="http://service.pvergleich.sw.othr.de/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.pvergleich.sw.othr.de/" elementFormDefault="unqualified" targetNamespace="http://service.pvergleich.sw.othr.de/" version="1.0">
+
+  <xs:element name="searchItemsWithShopList" type="tns:searchItemsWithShopList"/>
+
+  <xs:element name="searchItemsWithShopListResponse" type="tns:searchItemsWithShopListResponse"/>
+
+  <xs:complexType name="searchItemsWithShopList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="searchItemsWithShopListResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:dtoItem"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="dtoItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="entryList" nillable="true" type="tns:itemsEntry"/>
+      <xs:element minOccurs="0" name="itemId" type="xs:string"/>
+      <xs:element minOccurs="0" name="itemName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="itemsEntry">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="entryId" type="xs:string"/>
+      <xs:element minOccurs="0" name="itemId" type="xs:string"/>
+      <xs:element minOccurs="0" name="shopID" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="searchItemsWithShopListResponse">
+    <wsdl:part element="tns:searchItemsWithShopListResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchItemsWithShopList">
+    <wsdl:part element="tns:searchItemsWithShopList" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="IItemsLookUpService">
+    <wsdl:operation name="searchItemsWithShopList">
+      <wsdl:input message="tns:searchItemsWithShopList" name="searchItemsWithShopList">
+    </wsdl:input>
+      <wsdl:output message="tns:searchItemsWithShopListResponse" name="searchItemsWithShopListResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IItemsLookUpServiceServiceSoapBinding" type="tns:IItemsLookUpService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="searchItemsWithShopList">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchItemsWithShopList">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchItemsWithShopListResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IItemsLookUpServiceService">
+    <wsdl:port binding="tns:IItemsLookUpServiceServiceSoapBinding" name="IItemsLookUpServicePort">
+      <soap:address location="http://im-lamport:8080/PVergleich/IItemsLookUpService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

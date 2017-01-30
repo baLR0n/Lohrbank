@@ -23,6 +23,10 @@ public class Receipt {
     public Receipt(){
     }
     
+    public Receipt(String message){
+        this.message = message;
+    }
+    
     public Receipt(Transaction transaction)
     {
         this.message = transaction.getMessage();

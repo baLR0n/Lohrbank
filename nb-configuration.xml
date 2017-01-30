@@ -24,5 +24,6 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-modules-maven-jaxws._5f_C_5f_IdentityService>http://im-lamport:8080/CivilRegistrationOffice/IdentityService?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_IdentityService>
         <org-netbeans-modules-projectapi.jsf_2e_language>Facelets</org-netbeans-modules-projectapi.jsf_2e_language>
         <org-netbeans-modules-javascript2-requirejs.enabled>true</org-netbeans-modules-javascript2-requirejs.enabled>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_IItemsLookUpService>http://im-lamport:8080/PVergleich/IItemsLookUpService?WSDL</org-netbeans-modules-maven-jaxws._5f_C_5f_IItemsLookUpService>
     </properties>
 </project-shared-configuration>

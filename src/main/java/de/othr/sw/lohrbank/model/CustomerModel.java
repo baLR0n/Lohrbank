@@ -6,6 +6,7 @@
 package de.othr.sw.lohrbank.model;
 
 import de.othr.sw.lohrbank.entity.Customer;
+import de.othr.sw.lohrbank.service.AccountService;
 import de.othr.sw.lohrbank.service.CustomerService;
 import de.othr.sw.lohrbank.service.RootDataService;
 import java.io.Serializable;
@@ -26,6 +27,9 @@ public class CustomerModel implements Serializable {
     private CustomerService customerService;
     
     @Inject
+    private AccountService accountService;
+
+    @Inject
     private RootDataService rootDataService;
     
     @PostConstruct
@@ -33,7 +37,8 @@ public class CustomerModel implements Serializable {
         rootDataService.GenerateRootData();
     }
     
-    private String userId, name, firstName, password, passwordAgain, citizenId, errorMessage;
+    private String userId, name, firstName, password, passwordAgain, citizenId, street, city, errorMessage;
+    private Integer postcode;
     private Customer lastGenerated = null;
     private Customer currentSession = null;
 
@@ -56,7 +61,7 @@ public class CustomerModel implements Serializable {
         this.currentSession = this.customerService.CheckCustomerAuth(this.userId, this.password);
         
         // Start job to check for debits which change the balance of one of the users accounts.
-        
+        this.accountService.CheckForDebits(this.currentSession);
     }
     
     /// Logout
@@ -152,6 +157,30 @@ public class CustomerModel implements Serializable {
         this.citizenId = citizenId;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Integer getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(Integer postcode) {
+        this.postcode = postcode;
+    }
+    
     public Customer getLastGenerated() {
         return lastGenerated;
     }

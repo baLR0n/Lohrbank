@@ -144,6 +144,11 @@ public class AccountService implements IAccountService, Serializable{
     @Transactional
     @Override
     public void CheckForDebits(Customer customer){
+        if(customer == null)
+        {
+            return;
+        }
+        
         customer = this.entityManager.merge(customer);
         
         List<Account> accounts = this.GetAllAccounts(customer);

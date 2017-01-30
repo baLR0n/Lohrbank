@@ -1,11 +1,15 @@
 package de.othr.sw.lohrbank.entity;
 
 import de.othr.sw.lohrbank.entity.util.StringIdEntity;
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
@@ -13,11 +17,15 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Customers")
-public class Customer extends StringIdEntity {
+@XmlAccessorType(XmlAccessType.NONE)
+public class Customer extends StringIdEntity implements Serializable {
 
     // Member
+    @XmlElement(name="name", required=true)
     private String name;
+    @XmlElement(name="firstName", required=true)
     private String firstName;
+    @XmlElement(name="password", required=true)
     private String password;
     
     @OneToMany(mappedBy="owner", fetch=FetchType.EAGER)
@@ -31,14 +39,10 @@ public class Customer extends StringIdEntity {
         super(id);
         this.setName(name);
         this.setFirstName(firstName);
-        this.password = password;
+        this.setPassword(password);
     }
     
     // Getter, Setter
-    public String getCustomerId() {
-        return super.getId();
-    }
-    
     public String getName() {
         return name;
     }
@@ -56,6 +60,10 @@ public class Customer extends StringIdEntity {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

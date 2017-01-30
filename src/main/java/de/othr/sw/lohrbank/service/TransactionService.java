@@ -77,7 +77,7 @@ public class TransactionService implements ITransactionService {
             return this.CreateTransaction(customerAccountId, targetAccountId, message, value);
         }
         
-        return new Receipt();
+        return new Receipt("FEHLER! Kunde: " + customer.getId()+ " AccountFrom: " + accountFrom.getId() + " AccountTo: " + targetAccountId + "---- Passen " + accountFrom.getOwner().getId() + " und " + customer.getId() + " zusammen?");
     }
     
     @WebMethod
