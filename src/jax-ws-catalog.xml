@@ -2,4 +2,5 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://im-lamport:8080/CivilRegistrationOffice/IdentityService?wsdl" uri="wsdl/im-lamport_8080/CivilRegistrationOffice/IdentityService.wsdl"/>
     <system systemId="http://im-lamport:8080/PVergleich/IItemsLookUpService?WSDL" uri="wsdl/im-lamport_8080/PVergleich/IItemsLookUpService.wsdl"/>
+    <system systemId="http://im-lamport:8080/SimonWebshop/OrderService?wsdl" uri="wsdl/im-lamport_8080/SimonWebshop/OrderService.wsdl"/>
 </catalog>

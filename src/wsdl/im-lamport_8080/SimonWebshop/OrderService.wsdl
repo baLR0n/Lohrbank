@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://Service/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="OrderServiceService" targetNamespace="http://Service/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://Service/" elementFormDefault="unqualified" targetNamespace="http://Service/" version="1.0">
+
+  <xs:element name="buyProduct" type="tns:buyProduct"/>
+
+  <xs:element name="buyProductResponse" type="tns:buyProductResponse"/>
+
+  <xs:complexType name="buyProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="buyProductResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:product"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="product">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="globalTradeIdentificationNumber" type="xs:string"/>
+      <xs:element minOccurs="0" name="productDescription" type="xs:string"/>
+      <xs:element name="productPrice" type="xs:long"/>
+      <xs:element minOccurs="0" name="productname" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="buyProductResponse">
+    <wsdl:part element="tns:buyProductResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="buyProduct">
+    <wsdl:part element="tns:buyProduct" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="OrderService">
+    <wsdl:operation name="buyProduct">
+      <wsdl:input message="tns:buyProduct" name="buyProduct">
+    </wsdl:input>
+      <wsdl:output message="tns:buyProductResponse" name="buyProductResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OrderServiceServiceSoapBinding" type="tns:OrderService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="buyProduct">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="buyProduct">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="buyProductResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OrderServiceService">
+    <wsdl:port binding="tns:OrderServiceServiceSoapBinding" name="OrderServicePort">
+      <soap:address location="http://im-lamport:8080/SimonWebshop/OrderService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

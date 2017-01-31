@@ -139,6 +139,24 @@
                         <id>wsimport-generate-IItemsLookUpService</id>
                         <phase>generate-sources</phase>
                     </execution>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>im-lamport_8080/SimonWebshop/OrderService.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <packageName></packageName>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <wsdlLocation>http://im-lamport:8080/SimonWebshop/OrderService?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/OrderService.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-OrderService</id>
+                        <phase>generate-sources</phase>
+                    </execution>
                 </executions>
                 <dependencies>
                     <dependency>

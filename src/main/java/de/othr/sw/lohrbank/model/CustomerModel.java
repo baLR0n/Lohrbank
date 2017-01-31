@@ -57,11 +57,13 @@ public class CustomerModel implements Serializable {
     }
     
     /// Checks user auth and proceeds with login.
-    public void Login(){
+    public String Login(){
         this.currentSession = this.customerService.CheckCustomerAuth(this.userId, this.password);
         
         // Start job to check for debits which change the balance of one of the users accounts.
         this.accountService.CheckForDebits(this.currentSession);
+        
+        return "konten";
     }
     
     /// Logout
@@ -98,12 +100,14 @@ public class CustomerModel implements Serializable {
         return this.currentSession != null;
     }
     
-    
     private void ClearForm(){
         this.errorMessage = "";
         this.citizenId = "";
         this.firstName = "";
         this.name = "";
+        this.street = "";
+        this.postcode = null;
+        this.city = "";
         this.password = "";
         this.passwordAgain = "";
     }

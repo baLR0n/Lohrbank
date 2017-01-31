@@ -11,6 +11,8 @@ import de.othr.sw.lohrbank.webservice.IdentityService;
 import de.othr.sw.pvergleich.service.DtoItem;
 import de.othr.sw.pvergleich.service.IItemsLookUpService;
 import de.othr.sw.pvergleich.service.IItemsLookUpServiceService;
+import de.othr.sw.pvergleich.service.ItemsEntry;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.jws.WebMethod;
@@ -21,6 +23,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.xml.ws.WebServiceRef;
+import service.OrderService;
+import service.OrderServiceService;
 
 /**
  *
@@ -30,8 +34,11 @@ import javax.xml.ws.WebServiceRef;
 @RequestScoped
 public class CustomerService implements ICustomerService {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/im-lamport_8080/SimonWebshop/OrderService.wsdl")
+    private OrderServiceService orderService;
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/im-lamport_8080/PVergleich/IItemsLookUpService.wsdl")
-    private IItemsLookUpServiceService service;
+    private IItemsLookUpServiceService itemsLookUpService;
     
     @PersistenceContext(unitName="Lohrbank")
     private EntityManager entityManager;
@@ -46,19 +53,28 @@ public class CustomerService implements ICustomerService {
             entityManager.persist(customer);
             
             // Order TAN device
-            
-            try { // Call Web Service Operation
-                IItemsLookUpService port = service.getIItemsLookUpServicePort();
+            // First, get cheapest offer.
+            try {
+                IItemsLookUpService lookUpPort = itemsLookUpService.getIItemsLookUpServicePort();
                 // TODO initialize WS operation arguments here
                 String searchString = "TAN";
                 // TODO process result here
-                List<DtoItem> result = port.searchItemsWithShopList(searchString);
+                List<DtoItem> result = lookUpPort.searchItemsWithShopList(searchString);
                 
                 // Select cheapest item
-                DtoItem toOrder = result.get(0);
+                ItemsEntry toOrder = this.GetCheapestItem(result);                                
+                System.out.println("Result = "+result);  
                 
-                System.out.println("Result = "+result);
-                
+                // Order that
+                OrderService orderPort = orderService.getOrderServicePort();
+                // TODO initialize WS operation arguments here
+                String authToken = "Bank1234567";
+                List<String> orderIds = new ArrayList<>();
+                orderIds.add(toOrder.getItemId());
+
+                // TODO process result here
+                List<service.Product> orderResult = orderPort.buyProduct(authToken, orderIds);
+                System.out.println("Result = "+orderResult);
             } catch (Exception ex) {
                 // TODO handle custom exceptions here
             }
@@ -69,6 +85,19 @@ public class CustomerService implements ICustomerService {
         {
             return null;
         }
+    }
+    
+    private ItemsEntry GetCheapestItem(List<DtoItem> items){
+        ItemsEntry lowest = null;
+        for(DtoItem item : items){ // Iterate through item collections by shop
+            for(ItemsEntry entry : item.getEntryList()){ // Iterate through each item from a shop
+                if(lowest == null || lowest.getPrice() > entry.getPrice()){ // Check if current item is the cheapest.
+                    lowest = entry;
+                }
+            }
+        }
+        
+        return lowest;
     }
     
     /**

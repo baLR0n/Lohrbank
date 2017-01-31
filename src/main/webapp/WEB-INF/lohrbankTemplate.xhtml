@@ -14,7 +14,6 @@
     <h:body id="body">
         <b:navBar brand="Lohrbank" brand-href="#">
             <b:navbarLinks>
-                <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Home" outcome="home"></b:navLink>
                 <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Banking" outcome="banking"></b:navLink>
                 <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Meine Konten" outcome="konten"></b:navLink>
             </b:navbarLinks>
