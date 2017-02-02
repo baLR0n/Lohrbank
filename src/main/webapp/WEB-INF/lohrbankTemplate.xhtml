@@ -7,7 +7,7 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <h:outputStylesheet name="./css/default.css"/>
+<!--        <h:outputStylesheet name="./css/default.css"/>-->
         <title>Niemals a Lohr mit der Lohrbank</title>
     </h:head>
 
@@ -17,9 +17,9 @@
                 <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Banking" outcome="banking"></b:navLink>
                 <b:navLink rendered="#{customerModel.HasLoggedInCustomer()}" value="Meine Konten" outcome="konten"></b:navLink>
             </b:navbarLinks>
-            <h:form rendered="#{customerModel.HasLoggedInCustomer()}" class="navbar-logout">
+            <h:form rendered="#{customerModel.HasLoggedInCustomer()}" class="navbar-logout" style="padding-top:12px;">
                 <h:outputText value="Hallo #{customerModel.currentSession.firstName}!"/>
-                <h:commandButton class="margin-left-5" action="#{customerModel.Logout()}" value="Logout"></h:commandButton>
+                <h:commandButton class="margin-left-5" style="margin-left:5px;" action="#{customerModel.Logout()}" value="Logout"></h:commandButton>
             </h:form>
         </b:navBar> <!-- Nav-bar -->
         

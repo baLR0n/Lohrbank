@@ -31,12 +31,26 @@ public class AccountService implements IAccountService, Serializable{
     @PersistenceContext(unitName="Lohrbank")
     private EntityManager entityManager;
     
+    /**
+     * Creates an new account
+     * @param customer
+     * @param name
+     * @return 
+     */
     @Transactional
     @Override
     public Account CreateAccount(Customer customer, String name) {
         return this.CreateAccount(customer, name, 0, 500); // 500€ default disposition;
     }
     
+    /**
+     * Creates an new account
+     * @param customer
+     * @param name
+     * @param balance
+     * @param disposition
+     * @return 
+     */
     @Transactional
     @Override
     public Account CreateAccount(Customer customer, String name, double balance, double disposition) {
@@ -52,6 +66,15 @@ public class AccountService implements IAccountService, Serializable{
         return account;
     }
 
+    /**
+     * Creates an new account
+     * @param customer
+     * @param id
+     * @param name
+     * @param balance
+     * @param disposition
+     * @return 
+     */
     @Transactional
     @Override
     public Account CreateAccount(Customer customer, Long id, String name, double balance, double disposition) {
@@ -67,6 +90,12 @@ public class AccountService implements IAccountService, Serializable{
         return account;
     }
 
+    /**
+     * Changes the balance of a specific account.
+     * @param accountId
+     * @param value
+     * @return 
+     */
     @Transactional
     @Override
     public double ChangeAccountBalance(Long accountId, double value) {
@@ -90,6 +119,12 @@ public class AccountService implements IAccountService, Serializable{
         return -Double.MAX_VALUE;
     }
 
+    /**
+     * Changes the disposition value of a specific account.
+     * @param accountId
+     * @param disposition
+     * @return 
+     */
     @Transactional
     @Override
     public double ChangeAccountDisposition(Long accountId, double disposition) {
@@ -106,6 +141,13 @@ public class AccountService implements IAccountService, Serializable{
         return 0;
     }
 
+    /**
+     * Returns the account info of an specific account for a specific time frame
+     * @param accountId
+     * @param from
+     * @param to
+     * @return 
+     */
     @Transactional
     @Override
     public AccountInfo GetAccountInfo(Long accountId, Date from, Date to) {
@@ -130,6 +172,11 @@ public class AccountService implements IAccountService, Serializable{
         return info;
     }
 
+    /**
+     * Get all accounts from a customer.
+     * @param customer
+     * @return 
+     */
     @Transactional
     @Override
     public List<Account> GetAllAccounts(Customer customer) {
@@ -141,6 +188,10 @@ public class AccountService implements IAccountService, Serializable{
         return query.getResultList();
     }
     
+    /**
+     * Check if debits are open for a specific customer and execute them.
+     * @param customer 
+     */
     @Transactional
     @Override
     public void CheckForDebits(Customer customer){

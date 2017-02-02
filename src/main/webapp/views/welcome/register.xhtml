@@ -88,7 +88,7 @@
                                     <h:inputSecret id="input_password_again" value="#{customerModel.passwordAgain}" class="form-control bf-no-message has-success" pt:placeholder="Passwort bestätigen" />
                                 </div>
                             </div>
-                            <h:commandButton class="col-xs-12 margin-top-5" action="#{customerModel.Register()}" value="Registrieren"/>
+                            <h:commandButton class="col-xs-12 margin-top-5" style="margin-top: 5px;" action="#{customerModel.Register()}" value="Registrieren"/>
                         </h:form>
                         <h:outputLabel value="#{customerModel.errorMessage}" style="color:red"/>
                     </ui:insert>

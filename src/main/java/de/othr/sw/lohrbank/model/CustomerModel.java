@@ -42,7 +42,10 @@ public class CustomerModel implements Serializable {
     private Customer lastGenerated = null;
     private Customer currentSession = null;
 
-    /// Creates a new customer from the values entered in the register form.
+    /**
+     * Creates a new customer from the values entered in the register form.
+     * @return 
+     */
     public String CreateCustomer(){
         this.lastGenerated = customerService.CreateCustomer(new Customer(this.userId, this.name, this.firstName, this.password));
         this.ClearForm();
@@ -56,7 +59,10 @@ public class CustomerModel implements Serializable {
         return "customerCreated";
     }
     
-    /// Checks user auth and proceeds with login.
+    /**
+     * Checks user auth and proceeds with login.
+     * @return 
+     */
     public String Login(){
         this.currentSession = this.customerService.CheckCustomerAuth(this.userId, this.password);
         
@@ -66,14 +72,19 @@ public class CustomerModel implements Serializable {
         return "konten";
     }
     
-    /// Logout
+    /**
+     * Logout
+     * @return 
+     */
     public String Logout(){
         this.currentSession = null;
         return "welcome";
     }
     
-    /// Checks citizen ID, form data and creates a new customer.
-    // ToDo: namen und vornamen in die Form
+    /**
+     * Checks citizen ID, form data and creates a new customer.
+     * @return 
+     */
     public String Register(){
         if(this.customerService.IdentityRequest(this.citizenId, this.name, this.firstName)){
             if(this.password.equals(this.passwordAgain)){
@@ -91,15 +102,25 @@ public class CustomerModel implements Serializable {
         return "registerFailed";
     }
     
-    /// Shows the register page.
+    /**
+     * Navigates to the register page.
+     * @return 
+     */
     public String ShowRegisterPage(){
         return "showRegister";
     }
     
+    /**
+     * Returns whether or not a customer is logged in.
+     * @return 
+     */
     public boolean HasLoggedInCustomer() {
         return this.currentSession != null;
     }
     
+    /**
+     * Clears the form for the next cycle.
+     */
     private void ClearForm(){
         this.errorMessage = "";
         this.citizenId = "";

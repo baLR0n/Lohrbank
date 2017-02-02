@@ -9,7 +9,6 @@ import de.othr.sw.lohrbank.entity.util.RandomIdEntity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -42,6 +41,7 @@ public class Account extends RandomIdEntity implements Serializable{
         this.id = id;
     }
 
+    // Getter / Setter
     public String getName() {
         return name;
     }

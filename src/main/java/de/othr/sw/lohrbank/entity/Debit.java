@@ -22,13 +22,21 @@ public class Debit extends Transaction {
     public Debit() {
     }
     
-    /// Creates a debit transaction set on specified date.
+    /**
+     * Creates a debit transaction set on specified date.
+     * @param accountFrom
+     * @param accountTo
+     * @param message
+     * @param value
+     * @param date 
+     */
     public Debit(Account accountFrom, Account accountTo, String message, double value, Date date)
     {
         super(accountFrom, accountTo, message, value);
         this.transactionDate = date;
     }
 
+    // Getter / Setter
     public boolean isIsCompleted() {
         return isCompleted;
     }

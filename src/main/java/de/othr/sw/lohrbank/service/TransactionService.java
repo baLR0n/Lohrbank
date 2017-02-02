@@ -35,6 +35,14 @@ public class TransactionService implements ITransactionService {
     @Inject
     private AccountService accountService;
     
+    /**
+     * Creates a new transaction
+     * @param customerAccountId
+     * @param targetAccountId
+     * @param message
+     * @param value
+     * @return 
+     */ 
     @Transactional
     @WebMethod(exclude=true)
     public Receipt CreateTransaction(Long customerAccountId, Long targetAccountId, String message, double value){
@@ -60,6 +68,15 @@ public class TransactionService implements ITransactionService {
         return new Receipt();
     }
     
+    /**
+     * Creates a new transaction
+     * @param customer
+     * @param customerAccountId
+     * @param targetAccountId
+     * @param message
+     * @param value
+     * @return 
+     */
     @WebMethod
     @Transactional
     @Override
@@ -80,6 +97,16 @@ public class TransactionService implements ITransactionService {
         return new Receipt("FEHLER! Kunde: " + customer.getId()+ " AccountFrom: " + accountFrom.getId() + " AccountTo: " + targetAccountId + "---- Passen " + accountFrom.getOwner().getId() + " und " + customer.getId() + " zusammen?");
     }
     
+    /**
+     * Creates a new debit task
+     * @param customer
+     * @param customerAccountId
+     * @param targetAccountId
+     * @param message
+     * @param value
+     * @param date
+     * @return 
+     */
     @WebMethod
     @Transactional
     @Override
@@ -101,6 +128,15 @@ public class TransactionService implements ITransactionService {
         return new Receipt();
     }
     
+    /**
+     * Creates a new debit task.
+     * @param customerAccountId
+     * @param targetAccountId
+     * @param message
+     * @param value
+     * @param date
+     * @return 
+     */
     @Transactional
     @WebMethod(exclude=true)
     public Receipt CreateDebit(Long customerAccountId, Long targetAccountId, String message, double value, Date date){

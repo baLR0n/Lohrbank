@@ -20,14 +20,14 @@
                         <h2>Was möchten Sie als nächstes tun?</h2>
                         <h:form>
                             <b:row>
-                                <div class="col-xs-6 height-150">
+                                <div class="col-xs-6 height-150" style="height: 150px;">
                                     <h2>Überweisung</h2>
-                                    <p class="height-80">Überweisen Sie Geld von einem ihrer Konten auf ein Konto ihrer Wahl. Die Buchung wird sofort durchgeführt.</p>
+                                    <p class="height-80" style="height:80px;">Überweisen Sie Geld von einem ihrer Konten auf ein Konto ihrer Wahl. Die Buchung wird sofort durchgeführt.</p>
                                     <h:commandButton class="col-xs-12" action="#{transactionModel.ShowTransactionCreation()}" value="Überweisung tätigen >>"/>
                                 </div>
-                                <div class="col-xs-6 height-150">
+                                <div class="col-xs-6 height-150" style="height: 150px;">
                                     <h2>Lastschrift</h2>
-                                    <p class="height-80">Planen Sie einen Geldtransfer zu einem von Ihnen gewählten Zeitpunkt.</p>
+                                    <p class="height-80" style="height: 80px;">Planen Sie einen Geldtransfer zu einem von Ihnen gewählten Zeitpunkt.</p>
                                     <h:commandButton class="col-xs-12" action="#{transactionModel.ShowDebitCreation()}" value="Lastschrift anlegen >>"/>
                                 </div>
                             </b:row>
@@ -35,7 +35,6 @@
                     </b:container>
                 </div>
             </ui:define>
-
         </ui:composition>
     </h:body>
 </html>

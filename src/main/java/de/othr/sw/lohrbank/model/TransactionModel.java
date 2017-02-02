@@ -39,9 +39,6 @@ public class TransactionModel implements Serializable {
     
     @Inject
     private CustomerModel customerModel;
-    
-    @Inject
-    private AccountModel accountModel;
 
     @Inject
     private AccountConverter accountConverter;
@@ -56,7 +53,10 @@ public class TransactionModel implements Serializable {
     private Debit lastDebit;
     private Receipt lastReceipt;
 
-    /// Creates an new transaction from the values entered in the register form.
+    /**
+     * Creates an new transaction from the values entered in the register form.
+     * @return 
+     */
     public String CreateTransaction(){
         this.lastReceipt = this.transactionService.CreateTransaction(this.customerModel.getCurrentSession(), this.customerAccountId, this.targetAccountId, this.message, this.value);
         
@@ -68,7 +68,10 @@ public class TransactionModel implements Serializable {
         return "transactionCreationFailed";
     }
 
-    /// Creates an new debit from the values entered in the register form.
+    /**
+     * Creates an new debit from the values entered in the register form.
+     * @return 
+     */
     public String CreateDebit(){
         this.lastReceipt = this.transactionService.CreateDebit(this.customerAccountId, this.targetAccountId, this.message, this.value, this.transactionDate);
         
@@ -80,7 +83,13 @@ public class TransactionModel implements Serializable {
         return "debitCreationFailed";
     }
             
-    /// Get the last transactions of account Y from a selected timespan
+    /**
+     * Get the last transactions of account Y from a selected timespan
+     * @param accountId
+     * @param from
+     * @param to
+     * @return List of Transactions from this timespan.
+     */
     public List<Transaction> GetLastTransactions(Long accountId, Date from, Date to){
         List<Transaction> list = new ArrayList<>();
         AccountInfo info = this.accountService.GetAccountInfo(accountId, from, to);
@@ -92,6 +101,11 @@ public class TransactionModel implements Serializable {
         return list;
     }
     
+    /**
+     * Gets the transactions of the last 30 days from a certain account.
+     * @param accountId
+     * @return List of Transactions from this timespan.
+     */
     public List<Transaction> GetLastTransactions(Long accountId){
         int daysBack = 30;
         Calendar calendar = Calendar.getInstance();
@@ -100,6 +114,12 @@ public class TransactionModel implements Serializable {
         return this.GetLastTransactions(accountId, calendar.getTime(), new Date());
     }
     
+    /**
+     * Sets the direction of the transaction arrow to left for outgoing or red for incoming transactions
+     * @param accountId
+     * @param transaction
+     * @return 
+     */
     public String GetTransactionDirectionClass(Long accountId, Transaction transaction){
         if(this.IsTransactionFromAccount(accountId, transaction)){
             return "glyphicon-arrow-left";
@@ -107,6 +127,12 @@ public class TransactionModel implements Serializable {
         return "glyphicon-arrow-right";
     }
     
+    /**
+     * Sets the color of the transaction value to green for positive or red for negative
+     * @param accountId
+     * @param transaction
+     * @return 
+     */
     public String GetTransactionValueClass(Long accountId, Transaction transaction){
         if(this.IsTransactionFromAccount(accountId, transaction)){
             return "color:red";
@@ -114,20 +140,37 @@ public class TransactionModel implements Serializable {
         return "color:green";
     }
     
+    /**
+     * Checks if a transaction was made from a certain account
+     * @param accountId
+     * @param transaction
+     * @return A value which indicates whether the transacton was done from a certain account or not.
+     */
     private boolean IsTransactionFromAccount(Long accountId, Transaction transaction){
         return transaction.getAccountFrom().getId().equals(accountId);
     }
     
+    /**
+     * Navigates to transaction creation.
+     * @return 
+     */
     public String ShowTransactionCreation(){
         this.ResetForm();
         return "showTransactionCreation";
     }
     
+    /**
+     * Navigates to debit creation.
+     * @return 
+     */
     public String ShowDebitCreation(){
         this.ResetForm();
         return "showDebitCreation";
     }
     
+    /**
+     * Resets the form for the next cycle.
+     */
     private void ResetForm(){
         this.message = "";
         this.value = 0;
@@ -142,7 +185,10 @@ public class TransactionModel implements Serializable {
         return check;
     }
     
-    /// Checks if the current user has any accounts registered.
+    /**
+     * Checks if the current user has any accounts registered.
+     * @return a value wether a customer has a minimum of one account.
+     */
     public boolean HasAccounts(){
         List<Account> check = this.accountService.GetAllAccounts(this.customerModel.getCurrentSession());
         
@@ -150,7 +196,6 @@ public class TransactionModel implements Serializable {
     }
     
     /// Getter / Setter
-
     public String getMessage() {
         return message;
     }

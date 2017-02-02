@@ -46,7 +46,16 @@
                             <h:inputText id="input_transactionmessage" value="#{transactionModel.message}" class="form-control bf-no-message has-success" pt:placeholder="Verwendungszweck" />
                         </div>
                     </div>
-                    <h:commandButton class="col-xs-12 margin-top-5" action="#{transactionModel.CreateTransaction()}" value="Überweisen"/>
+                    <div id="transactiontan" class="form-group">
+                        <h:outputLabel value="TAN"></h:outputLabel>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span><i class="glyphicon glyphicon-lock"></i></span>
+                            </span>
+                            <h:inputText id="input_transactiontan" required="true" class="form-control bf-no-message has-success" pt:placeholder="TAN" />
+                        </div>
+                    </div>
+                    <h:commandButton class="col-xs-12 margin-top-5" style="margin-top: 5px;" action="#{transactionModel.CreateTransaction()}" value="Überweisen"/>
                 </h:form>
             </ui:define>
 

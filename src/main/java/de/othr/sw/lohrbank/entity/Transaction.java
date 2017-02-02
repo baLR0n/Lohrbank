@@ -50,11 +50,20 @@ public class Transaction extends GeneratedIdEntity implements Serializable{
         this.transactionDate = new Date();
     }
     
+    /**
+     * Returns the date as a formated string
+     * @return 
+     */
     public String GetFormatedDateString(){
         Format format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         return format.format(this.transactionDate);
     }
     
+    /**
+     * Returns the name of the other involved customer.
+     * @param accountId
+     * @return 
+     */
     public String GetOtherCustomerName(Long accountId){
         if(this.accountFrom.getId().equals(accountId)){
             return String.format("%s %s (Knt.Nr: %s)", this.accountTo.getOwner().getFirstName(), this.accountTo.getOwner().getName(), this.accountTo.getId().toString());

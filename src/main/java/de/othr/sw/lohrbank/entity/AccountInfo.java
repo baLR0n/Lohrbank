@@ -18,6 +18,7 @@ public class AccountInfo {
     private Date dateTo;
     private List<Transaction> transactions;
 
+    // Getter / Setter
     public Long getAccountId() {
         return accountId;
     }

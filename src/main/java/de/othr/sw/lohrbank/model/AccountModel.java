@@ -8,7 +8,6 @@ package de.othr.sw.lohrbank.model;
 import de.othr.sw.lohrbank.entity.Account;
 import de.othr.sw.lohrbank.entity.Customer;
 import de.othr.sw.lohrbank.service.AccountService;
-import de.othr.sw.lohrbank.service.CustomerService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,10 +22,7 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class AccountModel implements Serializable {
-    
-    @Inject
-    private CustomerService customerService;
-    
+        
     @Inject
     private AccountService accountService;
     
@@ -37,7 +33,10 @@ public class AccountModel implements Serializable {
     private double disposition;
     private Account lastCreated;
 
-    /// Creates an new account from the values entered in the register form.
+    /**
+     * Creates an new account from the values entered in the register form.
+     * @return 
+     */
     public String CreateAccount(){
         this.lastCreated = this.accountService.CreateAccount(this.customerModel.getCurrentSession(), this.accountName, 0, this.disposition);
         
@@ -48,24 +47,36 @@ public class AccountModel implements Serializable {
         return "accountCreationFailed";
     }
     
-    /// Shows the form to create an new account.
+    /**
+     * Shows the form to create an new account.
+     * @return 
+     */
     public String ShowAccountCreationPage(){
         this.ResetForm();
         return "showAccountCreation";
     }
     
+    /**
+     * Resets the form for the next cycle.
+     */
     private void ResetForm(){
         this.accountName = "";
         this.disposition = 0;
     }
     
-    /// Returns every account of the currently logged in customer.
+    /**
+     * Returns every account of the currently logged in customer.
+     * @return 
+     */
     public List<Account> GetAllAccounts(){
         Customer current = this.customerModel.getCurrentSession();
         return this.accountService.GetAllAccounts(current);
     }
     
-    /// Gets the balance of all accounts of the logged in customer combined.
+    /**
+     * Gets the balance of all accounts of the logged in customer combined.
+     * @return 
+     */
     public double GetOverallBalance(){
         List<Account> accounts = this.accountService.GetAllAccounts(this.customerModel.getCurrentSession());
         
@@ -75,7 +86,11 @@ public class AccountModel implements Serializable {
         return balance;
     }
     
-    /// Determines if a value is positive or not.
+    /**
+     * Determines if a value is positive or not.
+     * @param balance
+     * @return 
+     */
     public String IsFloatPositive(double balance){
         if(balance >= 0){
             return "success";
@@ -84,7 +99,10 @@ public class AccountModel implements Serializable {
         return "danger";
     }
     
-    /// Checks if the current user has any accounts registered.
+    /**
+     * Checks if the current user has any accounts registered.
+     * @return 
+     */
     public boolean HasAccounts(){
         if(!this.customerModel.HasLoggedInCustomer())
         {

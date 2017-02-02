@@ -8,13 +8,13 @@ package de.othr.sw.lohrbank.service;
 import de.othr.sw.lohrbank.entity.Customer;
 import de.othr.sw.lohrbank.webservice.IDCardService;
 import de.othr.sw.lohrbank.webservice.IdentityService;
-import de.othr.sw.pvergleich.service.DtoItem;
-import de.othr.sw.pvergleich.service.IItemsLookUpService;
-import de.othr.sw.pvergleich.service.IItemsLookUpServiceService;
 import de.othr.sw.pvergleich.service.ItemsEntry;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -22,9 +22,6 @@ import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import javax.xml.ws.WebServiceRef;
-import service.OrderService;
-import service.OrderServiceService;
 
 /**
  *
@@ -34,70 +31,39 @@ import service.OrderServiceService;
 @RequestScoped
 public class CustomerService implements ICustomerService {
 
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/im-lamport_8080/SimonWebshop/OrderService.wsdl")
-    private OrderServiceService orderService;
-
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/im-lamport_8080/PVergleich/IItemsLookUpService.wsdl")
-    private IItemsLookUpServiceService itemsLookUpService;
+    @Inject
+    private IItemLookUpService itemLookUpService;
+    
+    @Inject
+    private IItemOrderService itemOrderService;
     
     @PersistenceContext(unitName="Lohrbank")
     private EntityManager entityManager;
         
+    /**
+     * Creates a new customer
+     * @param customer
+     * @return 
+     */
     @Transactional
     @WebMethod(exclude=true)
     @Override
     public Customer CreateCustomer(@WebParam(name="customer") Customer customer) {
-        try
-        {
-            // Persist new customer.
-            entityManager.persist(customer);
-            
-            // Order TAN device
-            // First, get cheapest offer.
-            try {
-                IItemsLookUpService lookUpPort = itemsLookUpService.getIItemsLookUpServicePort();
-                // TODO initialize WS operation arguments here
-                String searchString = "TAN";
-                // TODO process result here
-                List<DtoItem> result = lookUpPort.searchItemsWithShopList(searchString);
-                
-                // Select cheapest item
-                ItemsEntry toOrder = this.GetCheapestItem(result);                                
-                System.out.println("Result = "+result);  
-                
-                // Order that
-                OrderService orderPort = orderService.getOrderServicePort();
-                // TODO initialize WS operation arguments here
-                String authToken = "Bank1234567";
-                List<String> orderIds = new ArrayList<>();
-                orderIds.add(toOrder.getItemId());
+        // Persist new customer.
+        entityManager.persist(customer);
 
-                // TODO process result here
-                List<service.Product> orderResult = orderPort.buyProduct(authToken, orderIds);
-                System.out.println("Result = "+orderResult);
-            } catch (Exception ex) {
-                // TODO handle custom exceptions here
-            }
+        // Order TAN device
+        // Get cheapest TAN Generator item
+        ItemsEntry toOrder = this.itemLookUpService.GetCheapestItemFor("TAN");
 
-            return customer;
-        }
-        catch (Throwable t) 
-        {
-            return null;
-        }
-    }
-    
-    private ItemsEntry GetCheapestItem(List<DtoItem> items){
-        ItemsEntry lowest = null;
-        for(DtoItem item : items){ // Iterate through item collections by shop
-            for(ItemsEntry entry : item.getEntryList()){ // Iterate through each item from a shop
-                if(lowest == null || lowest.getPrice() > entry.getPrice()){ // Check if current item is the cheapest.
-                    lowest = entry;
-                }
-            }
-        }
-        
-        return lowest;
+        // Order that
+        String authToken = "Bank1234567";
+        List<String> orderIds = new ArrayList<>();
+        orderIds.add(toOrder.getItemId());
+
+        this.itemOrderService.OrderItems(authToken, orderIds);
+
+        return customer;
     }
     
     /**
@@ -119,6 +85,13 @@ public class CustomerService implements ICustomerService {
         return null;
     }
     
+    /**
+     * Checks the identity of a potential new customer
+     * @param id
+     * @param name
+     * @param firstName
+     * @return 
+     */
     @Override
     @WebMethod(exclude=true)
     public boolean IdentityRequest(String id, String name, String firstName){   

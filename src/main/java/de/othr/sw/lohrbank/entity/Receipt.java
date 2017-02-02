@@ -23,10 +23,18 @@ public class Receipt {
     public Receipt(){
     }
     
+    /**
+     * Creates a receipt just with a message.
+     * @param message 
+     */
     public Receipt(String message){
         this.message = message;
     }
     
+    /**
+     * Creates the receipt for a transaction
+     * @param transaction 
+     */
     public Receipt(Transaction transaction)
     {
         this.message = transaction.getMessage();
@@ -37,6 +45,10 @@ public class Receipt {
         this.success = true;
     }
     
+    /**
+     * Creates the receipt for a debit
+     * @param debit 
+     */
     public Receipt(Debit debit)
     {
         this.message = debit.getMessage();
@@ -48,6 +60,7 @@ public class Receipt {
         this.success = true;
     }
 
+    // Getter / Setter
     public String getMessage() {
         return message;
     }
